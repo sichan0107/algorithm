@@ -28,6 +28,11 @@ public class NotSameNumber {
         int size = 0;
         int idxAnswer = 0;
 
+        if(answer.length == 1){
+            answer[0] = arr[0];
+            return answer;
+        }
+
         if(arr.length == 2 && arr[arr.length - 2] == arr[arr.length - 1]) {
             answer[0] = arr[0];
             return answer;
@@ -51,9 +56,19 @@ public class NotSameNumber {
     }
 
     public static void main(String[] args) throws IOException {
-        int[] arrs = {1,1,3,3,0,1,1};
+        //int[] arrs = {1,1,3,3,0,1,1};
+        //int[] arrs = {0,1,0,1};
+        int[] arrs = {0,0,0,0};
 
-        System.out.println(solution(arrs));
+        System.out.println(getArraySize(arrs));
+
+        int[] result = solution(arrs);
+
+        System.out.println("==========");
+
+        for(int i: result){
+            System.out.println(i);
+        }
 
     }
 }
