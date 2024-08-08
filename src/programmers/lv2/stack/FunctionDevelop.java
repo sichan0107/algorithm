@@ -1,19 +1,13 @@
 package programmers.lv2.stack;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  *  LV2 기능 개발
  */
 public class FunctionDevelop {
-
-    // 시간초과 됨.
-    public static int[] solution(int[] progresses, int[] speeds) {
-        ArrayList<Integer> answerList = new ArrayList<>();
 
         /**
          * 1. Array -> List로 변환하는 두 가지 방법
@@ -33,42 +27,10 @@ public class FunctionDevelop {
          *   int[] arr2 = list.stream().mapToInt(Integer::intValue).toArray();
          */
 
-
-        // 반환된 리스트는 고정 사이즈 리스트로 추가, 삭제가 불가능하다
-        //List<Integer> progressList = Arrays.asList(progresses);
-
-        // 리스트는 기본 타입(Primitive type)을 지원하지 않기 때문에 boxed()를
-        // 이용해 래퍼 타입(Wrapper type) 으로 박싱한 후에 리스트로 변환해야 한다
-        List<Integer> progressList = Arrays.stream(progresses).boxed().collect(Collectors.toList());
-        List<Integer> speedList = Arrays.stream(speeds).boxed().collect(Collectors.toList());
-
-        while(!progressList.isEmpty()){
-            int first = progressList.get(0);
-            int remainDays = (100 - first) / speedList.get(0);
-
-            for(int i=0; i<progressList.size(); i++){
-                progressList.set(i, progressList.get(i) + (speedList.get(i) * remainDays));
-            }
-
-            int cnt = 0;
-            while(progressList.get(0) >= 100){
-                cnt++;
-                progressList.remove(0);
-                speedList.remove(0);
-
-                if(progressList.isEmpty()) break;
-
-            }
-            answerList.add(cnt);
-
-        }
-
-        return answerList.stream().mapToInt(Integer::intValue).toArray();
-    }
-
-
+    // solution2는 배열만으로 풀어보려 했으나.... 메모리 초과 발생...
     public static int[] solution2(int[] progresses, int[] speeds){
         ArrayList<Integer> resultList = new ArrayList<>();
+        int resultIdx = 0;
         int idx = 0;
 
         while(idx < progresses.length){
@@ -91,7 +53,39 @@ public class FunctionDevelop {
                 }
             }
             resultList.add(cnt);
+            resultIdx++;
+        }
 
+        int[] result = new int[resultList.size()];
+        for(int i=0; i<result.length ; i++){
+            result[i] = resultList.get(i);
+        }
+
+        //return resultList.stream().mapToInt(Integer::intValue).toArray();
+        return result;
+    }
+
+    public static int[] solution(int[] progresses, int[] speeds){
+        Queue<Integer> completeDays = new LinkedList<>();
+        List<Integer> resultList = new ArrayList<>();
+
+        for(int i=0; i<progresses.length; i++){
+            int remain = 100 - progresses[i]; //99, 96, 94
+            double dDay = Double.parseDouble(String.valueOf(remain)) / Double.parseDouble(String.valueOf(speeds[i]));
+            int day = (int)Math.ceil(dDay) ; //1, 3, 4
+
+            completeDays.add(day);
+        }
+
+        while (!completeDays.isEmpty()){
+            int day = completeDays.poll();
+            int cnt = 1;
+
+            while(!completeDays.isEmpty() && day >= completeDays.peek()){
+                completeDays.poll();
+                cnt++;
+            }
+            resultList.add(cnt);
         }
         return resultList.stream().mapToInt(Integer::intValue).toArray();
     }
@@ -99,17 +93,27 @@ public class FunctionDevelop {
     public static void main(String[] args) throws IOException {
         //System.out.println((100 - 93) / 1);
 
-        //int[] progresses = {93, 30, 55};
-        //int[] speeds = {1, 30, 5};
+        /**
+         *  Test case 11의 반례
+         *  progresses = 99, 96, 94
+         *  speeds = 1, 3, 4
+         *  기대값 : 1, 2
+         */
 
-        int[] progresses = {95, 90, 99, 99, 80, 99};
-        int[] speeds = {1, 1, 1, 1, 1, 1};
+        int[] progresses = {99, 96, 94};
+        int[] speeds = {1, 3, 4};
 
-        int[] result = solution2(progresses, speeds);
+        //int[] progresses = {95, 90, 99, 99, 80, 99};
+        //int[] speeds = {1, 1, 1, 1, 1, 1};
+
+        int[] result = solution(progresses, speeds);
         for(int i : result){
             System.out.println(i);
         }
 
+        Runtime.getRuntime().gc();
+        long usedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        System.out.print(usedMemory + " bytes");
 
     }
 
