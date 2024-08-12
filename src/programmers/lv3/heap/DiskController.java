@@ -5,6 +5,14 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 // LV3 디스크 컨트롤러
+
+/**
+ *
+ *  누적되는 needTime - 현재 requestTime의 값이 제일 적은 순서대로 sort
+ *  -> 바로바로 실행될 수 있게 
+ *
+ */
+
 public class DiskController {
     static class Request implements Comparable<Request>{
         int requestTime; //요청된 시간
@@ -37,6 +45,7 @@ public class DiskController {
             }
         }); // 최소힙으로 만들어야 빠른 작업부터 할 수 있음.
 
+        Math
         for(int[] job : jobs){
             Request rq = new Request(job[0], job[1]);
             queue.add(rq);
