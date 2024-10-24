@@ -2,6 +2,7 @@ package baekjoon;
 
 import java.util.Scanner;
 
+// https://www.acmicpc.net/problem/17478
 // 재귀함수가 뭔가요?
 public class N17478 {
 
@@ -34,7 +35,23 @@ public class N17478 {
 
         if( count < input ){
             solution(count);
+        }else {
+            tempSep.append(sep);
+            sb.append(tempSep.toString());
+            sb.append("재귀함수가 뭔가요?\n");
+            sb.append(tempSep.toString());
+            sb.append("재귀함수는 자기 자신을 호출하는 함수라네\n");
+
+            sb.append(tempSep.toString());
+            sb.append("라고 답변하였지");
+
+            for(int i=1; i<input; i++){
+                // seq 빼줘야함
+                //tempSep.
+            }
         }
+
+
 
     }
 

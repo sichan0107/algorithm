@@ -33,7 +33,7 @@ public class MinSquare {
             big = Math.max(big, b);
         }
 
-        Arrays.stream(sizes).flatMap(size -> )
+        //Arrays.stream(sizes).flatMap(size -> )
 
         return big * small;
     }
