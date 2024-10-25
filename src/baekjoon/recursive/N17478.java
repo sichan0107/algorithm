@@ -1,4 +1,4 @@
-package baekjoon;
+package baekjoon.recursive;
 
 import java.util.Scanner;
 
